@@ -1,5 +1,6 @@
 package br.com.icarobombonato.sunshine;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -12,10 +13,8 @@ import java.net.URL;
 /**
  * Created by Icaro on 26/07/2014.
  */
-public class OpenWeatherData implements IWeatherData {
+public class FetchWeatherTask extends AsyncTask<Void, Void, Void> {
 
-    // These two need to be declared outside the try/catch
-    // so that they can be closed in the finally block.
     HttpURLConnection urlConnection = null;
     BufferedReader reader = null;
 
@@ -23,7 +22,11 @@ public class OpenWeatherData implements IWeatherData {
     String forecastJsonStr = null;
 
     @Override
-    public String GetJsonData() {
+    protected Void doInBackground(Void... params) {
+        return GetData();
+    }
+
+    public Void GetData() {
 
         try {
             // Construct the URL for the OpenWeatherMap query
@@ -41,7 +44,7 @@ public class OpenWeatherData implements IWeatherData {
             StringBuffer buffer = new StringBuffer();
             if (inputStream == null) {
                 // Nothing to do.
-                forecastJsonStr = null;
+                return null;
             }
             reader = new BufferedReader(new InputStreamReader(inputStream));
 
@@ -75,7 +78,6 @@ public class OpenWeatherData implements IWeatherData {
                 }
             }
         }
-
-        return forecastJsonStr;
+        return null;
     }
 }

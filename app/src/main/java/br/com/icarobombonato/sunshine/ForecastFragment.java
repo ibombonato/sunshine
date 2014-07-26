@@ -21,18 +21,16 @@ import java.util.List;
  */
 public class ForecastFragment extends Fragment {
 
-    IWeatherData _weatherData;
+    FetchWeatherTask _weatherData;
 
     public ForecastFragment() {
-        _weatherData = new OpenWeatherData();
+        _weatherData = new FetchWeatherTask();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
-        _weatherData.GetJsonData();
 
         String forecastArray[] = {
                 "Today - Sunny - 88/63",
