@@ -54,13 +54,18 @@ public class MainActivity extends ActionBarActivity {
      */
     public static class PlaceholderFragment extends Fragment {
 
+        IWeatherData _weatherData;
+
         public PlaceholderFragment() {
+            _weatherData = new OpenWeatherData();
         }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+            _weatherData.GetJsonData();
 
             String forecastArray[] = {
                     "Today - Sunny - 88/63",
