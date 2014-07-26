@@ -15,6 +15,8 @@ import java.net.URL;
  */
 public class FetchWeatherTask extends AsyncTask<Void, Void, Void> {
 
+    private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
+
     HttpURLConnection urlConnection = null;
     BufferedReader reader = null;
 
