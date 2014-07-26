@@ -48,7 +48,10 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
             // Possible parameters are avaiable at OWM's forecast API page, at
             // http://openweathermap.org/API#forecast
             //URL url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?q=94043&mode=json&units=metric&cnt=7");
-            URL url = new URL(uriBuilder.build().toString());
+            String builderString = uriBuilder.build().toString();
+            URL url = new URL(builderString);
+
+            Log.v(LOG_TAG, "Builder URI: " + builderString);
 
             // Create the request to OpenWeatherMap, and open the connection
             urlConnection = (HttpURLConnection) url.openConnection();
