@@ -1,5 +1,6 @@
 package br.com.icarobombonato.sunshine;
 
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -13,7 +14,7 @@ import java.net.URL;
 /**
  * Created by Icaro on 26/07/2014.
  */
-public class FetchWeatherTask extends AsyncTask<Void, Void, Void> {
+public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 
     private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
 
@@ -24,17 +25,30 @@ public class FetchWeatherTask extends AsyncTask<Void, Void, Void> {
     String forecastJsonStr = null;
 
     @Override
-    protected Void doInBackground(Void... params) {
-        return GetData();
+    protected Void doInBackground(String... params) {
+        return GetData(params);
     }
 
-    public Void GetData() {
+    public Void GetData(String... params) {
 
         try {
+
+            Uri.Builder uriBuilder = new Uri.Builder()
+                    .scheme("http")
+                    .encodedAuthority("api.openweathermap.org")
+                    .appendPath("data")
+                    .appendPath("2.5")
+                    .appendPath("forecast")
+                    .appendQueryParameter("q", params[0])
+                    .appendQueryParameter("mode", "json")
+                    .appendQueryParameter("units","metric")
+                    .appendQueryParameter("cnt", "7");
+
             // Construct the URL for the OpenWeatherMap query
             // Possible parameters are avaiable at OWM's forecast API page, at
             // http://openweathermap.org/API#forecast
-            URL url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?q=94043&mode=json&units=metric&cnt=7");
+            //URL url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?q=94043&mode=json&units=metric&cnt=7");
+            URL url = new URL(uriBuilder.build().toString());
 
             // Create the request to OpenWeatherMap, and open the connection
             urlConnection = (HttpURLConnection) url.openConnection();
@@ -65,7 +79,7 @@ public class FetchWeatherTask extends AsyncTask<Void, Void, Void> {
             forecastJsonStr = buffer.toString();
 
             Log.v(LOG_TAG, "Forecast JSON String: " + forecastJsonStr);
-            
+
         } catch (IOException e) {
             Log.e("ForecastFragment", "Error ", e);
             // If the code didn't successfully get the weather data, there's no point in attemping

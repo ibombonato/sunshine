@@ -49,7 +49,7 @@ public class ForecastFragment extends Fragment {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
-            new ForecastFragment().WeatherData.execute();
+            new ForecastFragment().WeatherData.execute("Andradas,br");
             return true;
         }
         return super.onOptionsItemSelected(item);
