@@ -32,7 +32,7 @@ public class ForecastFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        //_weatherData.GetJsonData();
+        _weatherData.GetJsonData();
 
         String forecastArray[] = {
                 "Today - Sunny - 88/63",
