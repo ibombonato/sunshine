@@ -30,7 +30,7 @@ public class ForecastFragment extends Fragment {
     public ForecastFragment() {
         WeatherData = new FetchWeatherTask();
     }
-    public String[] weatherArray;
+    private String[] weatherArray;
     public static ArrayAdapter mForecastArrayAdapter;
 
     @Override
