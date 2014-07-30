@@ -16,7 +16,7 @@ import java.net.URL;
 /**
  * Created by Icaro on 26/07/2014.
  */
-public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
+public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
     private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
 
@@ -26,10 +26,9 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 
     // Will contain the raw JSON response as a string.
     String forecastJsonStr = null;
-    String[] weatherStringArray = null;
 
     @Override
-    protected Void doInBackground(String... params){
+    protected String[] doInBackground(String... params){
         GetData(params);
         try {
             return GetWeatherStringArray();
@@ -114,12 +113,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
         return null;
     }
 
-    public Void GetWeatherStringArray() throws JSONException {
-
-        weatherStringArray = weatherFormatter.getWeatherDataFromJson(forecastJsonStr, 7);
-
-        Log.v(LOG_TAG, "Forecast weather StringArray: " + weatherStringArray.toString());
-
-        return null;
+    public String[] GetWeatherStringArray() throws JSONException {
+        return weatherFormatter.getWeatherDataFromJson(forecastJsonStr, 7);
     }
 }
