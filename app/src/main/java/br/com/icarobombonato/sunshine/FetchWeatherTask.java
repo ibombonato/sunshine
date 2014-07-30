@@ -22,6 +22,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 
     HttpURLConnection urlConnection = null;
     BufferedReader reader = null;
+    WeatherFormatter weatherFormatter = new DailyWeatherFormatter();
 
     // Will contain the raw JSON response as a string.
     String forecastJsonStr = null;
@@ -114,8 +115,6 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
     }
 
     public Void GetWeatherStringArray() throws JSONException {
-
-        DailyWeatherFormatter weatherFormatter = new DailyWeatherFormatter();
 
         weatherStringArray = weatherFormatter.getWeatherDataFromJson(forecastJsonStr, 7);
 
