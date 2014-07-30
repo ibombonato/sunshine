@@ -18,6 +18,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -29,11 +30,13 @@ public class ForecastFragment extends Fragment {
     public ForecastFragment() {
         WeatherData = new FetchWeatherTask();
     }
+    public String[] weatherArray;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Add this line in order for this fragment to handle menu events.
+        GetForecast();
         setHasOptionsMenu(true);
     }
 
@@ -49,10 +52,20 @@ public class ForecastFragment extends Fragment {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
-            new ForecastFragment().WeatherData.execute("Andradas,br");
+            GetForecast();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void GetForecast() {
+        try {
+            weatherArray = new ForecastFragment().WeatherData.execute("Andradas,br").get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -60,16 +73,7 @@ public class ForecastFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        String forecastArray[] = {
-                "Today - Sunny - 88/63",
-                "Tomorrow - Foggy - 70/46",
-                "Weds - Cloudy - 72/63",
-                "Thurs - Rainy - 64/51",
-                "Fri - Foggy - 70/46",
-                "Sat - Sunny - 76/68"
-        };
-
-        List<String> weekForecast = new ArrayList<String>(Arrays.asList(forecastArray));
+        List<String> weekForecast = new ArrayList<String>(Arrays.asList(weatherArray));
 
         ArrayAdapter forecastArrayAdapter = new ArrayAdapter<String>(getActivity(),
                 R.layout.list_item_forecast,
