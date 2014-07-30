@@ -25,18 +25,28 @@ import java.util.concurrent.ExecutionException;
  */
 public class ForecastFragment extends Fragment {
 
-    FetchWeatherTask WeatherData;
+    private FetchWeatherTask WeatherData;
 
     public ForecastFragment() {
         WeatherData = new FetchWeatherTask();
     }
     public String[] weatherArray;
+    public static ArrayAdapter mForecastArrayAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //GetForecast();
+        weatherArray = new String[]{
+                "Today - Sunny - 88/63",
+                "Tomorrow - Foggy - 70/46",
+                "Weds - Cloudy - 72/63",
+                "Thurs - Rainy - 64/51",
+                "Fri - Foggy - 70/46",
+                "Sat - Sunny - 76/68"
+        };
         // Add this line in order for this fragment to handle menu events.
-        GetForecast();
         setHasOptionsMenu(true);
     }
 
@@ -75,14 +85,14 @@ public class ForecastFragment extends Fragment {
 
         List<String> weekForecast = new ArrayList<String>(Arrays.asList(weatherArray));
 
-        ArrayAdapter forecastArrayAdapter = new ArrayAdapter<String>(getActivity(),
+        mForecastArrayAdapter = new ArrayAdapter<String>(getActivity(),
                 R.layout.list_item_forecast,
                 R.id.list_item_forecast_textview
                 ,weekForecast);
 
         ListView forecastList = (ListView) rootView.findViewById(R.id.listview_forecast);
 
-        forecastList.setAdapter(forecastArrayAdapter);
+        forecastList.setAdapter(mForecastArrayAdapter);
 
         return rootView;
     }

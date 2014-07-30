@@ -114,4 +114,14 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
     public String[] GetWeatherStringArray() throws JSONException {
         return weatherFormatter.getWeatherDataFromJson(forecastJsonStr, 7);
     }
+
+    @Override
+    protected void onPostExecute(String[] result) {
+        if (result != null){
+            ForecastFragment.mForecastArrayAdapter.clear();
+            for (String dayForecast : result){
+                ForecastFragment.mForecastArrayAdapter.add(dayForecast);
+            }
+        }
+    }
 }
