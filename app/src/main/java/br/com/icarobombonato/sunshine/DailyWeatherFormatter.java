@@ -10,7 +10,7 @@ import java.util.Date;
 /**
  * Created by icaro on 30/07/2014.
  */
-public class WeatherFormatter {
+public class DailyWeatherFormatter {
     /* The date/time conversion code is going to be moved outside the asynctask later,
  * so for convenience we're breaking it out into its own method now.
  */
@@ -41,7 +41,7 @@ public class WeatherFormatter {
      * Fortunately parsing is easy:  constructor takes the JSON string and converts it
      * into an Object hierarchy for us.
      */
-    private String[] getWeatherDataFromJson(String forecastJsonStr, int numDays)
+    public String[] getWeatherDataFromJson(String forecastJsonStr, int numDays)
             throws JSONException {
 
         // These are the names of the JSON objects that need to be extracted.
@@ -52,6 +52,7 @@ public class WeatherFormatter {
         final String OWM_MIN = "min";
         final String OWM_DATETIME = "dt";
         final String OWM_DESCRIPTION = "main";
+        //final String OWM_MAIN = "main";
 
         JSONObject forecastJson = new JSONObject(forecastJsonStr);
         JSONArray weatherArray = forecastJson.getJSONArray(OWM_LIST);
@@ -78,6 +79,7 @@ public class WeatherFormatter {
 
             // Temperatures are in a child object called "temp".  Try not to name variables
             // "temp" when working with temperature.  It confuses everybody.
+            //JSONObject temperatureObject = dayForecast.getJSONObject(OWM_MAIN);
             JSONObject temperatureObject = dayForecast.getJSONObject(OWM_TEMPERATURE);
             double high = temperatureObject.getDouble(OWM_MAX);
             double low = temperatureObject.getDouble(OWM_MIN);

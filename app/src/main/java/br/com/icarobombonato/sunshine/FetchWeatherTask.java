@@ -4,6 +4,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.json.JSONException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,13 +25,20 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 
     // Will contain the raw JSON response as a string.
     String forecastJsonStr = null;
+    String[] weatherStringArray = null;
 
     @Override
-    protected Void doInBackground(String... params) {
-        return GetData(params);
+    protected Void doInBackground(String... params){
+        GetData(params);
+        try {
+            return GetWeatherStringArray();
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
-    public Void GetData(String... params) {
+    private Void GetData(String... params) {
 
         try {
 
@@ -39,6 +48,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
                     .appendPath("data")
                     .appendPath("2.5")
                     .appendPath("forecast")
+                    .appendPath("daily")
                     .appendQueryParameter("q", params[0])
                     .appendQueryParameter("mode", "json")
                     .appendQueryParameter("units","metric")
@@ -100,6 +110,17 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
                 }
             }
         }
+        return null;
+    }
+
+    public Void GetWeatherStringArray() throws JSONException {
+
+        DailyWeatherFormatter weatherFormatter = new DailyWeatherFormatter();
+
+        weatherStringArray = weatherFormatter.getWeatherDataFromJson(forecastJsonStr, 7);
+
+        Log.v(LOG_TAG, "Forecast weather StringArray: " + weatherStringArray.toString());
+
         return null;
     }
 }
