@@ -4,7 +4,9 @@ package br.com.icarobombonato.sunshine;
  * Created by Icaro on 26/07/2014.
  */
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -39,15 +41,8 @@ public class ForecastFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //GetForecast();
-        weatherArray = new String[]{
-                "Today - Sunny - 88/63",
-                "Tomorrow - Foggy - 70/46",
-                "Weds - Cloudy - 72/63",
-                "Thurs - Rainy - 64/51",
-                "Fri - Foggy - 70/46",
-                "Sat - Sunny - 76/68"
-        };
+        GetForecast();
+
         // Add this line in order for this fragment to handle menu events.
         setHasOptionsMenu(true);
     }
@@ -72,7 +67,9 @@ public class ForecastFragment extends Fragment {
 
     private void GetForecast() {
         try {
-            weatherArray = new ForecastFragment().WeatherData.execute("Andradas,br").get();
+            SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+            String pref_location = sharedPref.getString(getString(R.string.pref_key_location), null);
+            weatherArray = new ForecastFragment().WeatherData.execute(pref_location).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
