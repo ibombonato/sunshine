@@ -4,7 +4,6 @@ package br.com.icarobombonato.sunshine;
  * Created by Icaro on 26/07/2014.
  */
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -100,12 +99,8 @@ public class ForecastFragment extends Fragment {
         forecastList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Context context = getActivity().getApplicationContext();
-                CharSequence text = "Hello toast!";
-                int duration = Toast.LENGTH_SHORT;
-
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
+                String item = mForecastArrayAdapter.getItem(i).toString();
+                Toast.makeText(getActivity(), item, Toast.LENGTH_SHORT).show();
             }
         });
 
