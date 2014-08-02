@@ -58,12 +58,15 @@ public class DetailActivity extends ActionBarActivity {
             View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
             Intent intent = getActivity().getIntent();
-            String forecastMessage = intent.getStringExtra(Intent.EXTRA_TEXT);
 
-            TextView weatherTextView = (TextView) rootView.findViewById(R.id.weather_extra_textview);
+            if(intent != null && intent.hasExtra(Intent.EXTRA_TEXT){
+                String forecastMessage = intent.getStringExtra(Intent.EXTRA_TEXT);
 
-            weatherTextView.setText(forecastMessage);
+                TextView weatherTextView = (TextView) rootView.findViewById(R.id.weather_extra_textview);
 
+                weatherTextView.setText(forecastMessage);
+            }
+            
             return rootView;
         }
     }
