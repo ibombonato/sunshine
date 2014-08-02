@@ -59,14 +59,14 @@ public class DetailActivity extends ActionBarActivity {
 
             Intent intent = getActivity().getIntent();
 
-            if(intent != null && intent.hasExtra(Intent.EXTRA_TEXT){
+            if(intent != null && intent.hasExtra(Intent.EXTRA_TEXT)){
                 String forecastMessage = intent.getStringExtra(Intent.EXTRA_TEXT);
 
                 TextView weatherTextView = (TextView) rootView.findViewById(R.id.weather_extra_textview);
 
                 weatherTextView.setText(forecastMessage);
             }
-            
+
             return rootView;
         }
     }
