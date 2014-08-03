@@ -74,7 +74,7 @@ public class ForecastFragment extends Fragment {
             String metric = prefs.getString(getString(R.string.pref_key_units),
                     getString(R.string.pref_default_units));
 
-            weatherArray = new ForecastFragment().WeatherData.execute(location).get();
+            weatherArray = new ForecastFragment().WeatherData.execute(location, metric).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

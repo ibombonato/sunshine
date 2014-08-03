@@ -51,7 +51,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
                     .appendPath("daily")
                     .appendQueryParameter("q", params[0])
                     .appendQueryParameter("mode", "json")
-                    .appendQueryParameter("units","metric")
+                    .appendQueryParameter("units", params[1])
                     .appendQueryParameter("cnt", "7");
 
             // Construct the URL for the OpenWeatherMap query
