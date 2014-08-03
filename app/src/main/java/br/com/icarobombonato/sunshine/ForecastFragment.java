@@ -4,10 +4,10 @@ package br.com.icarobombonato.sunshine;
  * Created by Icaro on 26/07/2014.
  */
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -67,9 +67,10 @@ public class ForecastFragment extends Fragment {
 
     private void GetForecast() {
         try {
-            SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-            String pref_location = sharedPref.getString(getString(R.string.pref_key_location), null);
-            weatherArray = new ForecastFragment().WeatherData.execute(pref_location).get();
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String location = prefs.getString(getString(R.string.pref_key_location),
+                    getString(R.string.pref_default_location));
+            weatherArray = new ForecastFragment().WeatherData.execute(location).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
