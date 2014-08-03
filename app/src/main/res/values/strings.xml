@@ -11,4 +11,7 @@
     <string name="pref_default_location" translatable="false">94043,USA</string>
 
     <string name="title_activity_settings">Settings</string>
+    <string name="pref_key_units" translatable="false">metric</string>
+    <string name="pref_title_units">Temperature</string>
+    <string name="pref_default_units">metric</string>
 </resources>
