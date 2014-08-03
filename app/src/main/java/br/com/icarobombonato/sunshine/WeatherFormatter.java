@@ -24,6 +24,7 @@ public abstract class WeatherFormatter {
      * Prepare the weather high/lows for presentation.
      */
     protected String formatHighLows(double high, double low) {
+
         // For presentation, assume the user doesn't care about tenths of a degree.
         long roundedHigh = Math.round(high);
         long roundedLow = Math.round(low);

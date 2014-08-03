@@ -70,6 +70,10 @@ public class ForecastFragment extends Fragment {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
             String location = prefs.getString(getString(R.string.pref_key_location),
                     getString(R.string.pref_default_location));
+
+            String metric = prefs.getString(getString(R.string.pref_key_units),
+                    getString(R.string.pref_default_units));
+
             weatherArray = new ForecastFragment().WeatherData.execute(location).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
