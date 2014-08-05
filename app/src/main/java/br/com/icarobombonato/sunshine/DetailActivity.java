@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.ShareActionProvider;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,15 +16,13 @@ import android.widget.TextView;
 
 public class DetailActivity extends ActionBarActivity {
 
-    ShareActionProvider mShareActionProvider;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.container, new DetailFragment())
                     .commit();
         }
     }
@@ -32,11 +31,6 @@ public class DetailActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.detail, menu);
-        // Get the menu item.
-        MenuItem menuItem = menu.findItem(R.id.action_share);
-        // Get the provider and hold onto it to set/change the share intent.
-        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
-
         return true;
     }
 
@@ -51,28 +45,21 @@ public class DetailActivity extends ActionBarActivity {
             startActivity(settingsIntent);
             return true;
         }
-        if (id == R.id.action_share) {
-            Intent shareIntent = new Intent(Intent.ACTION_SEND);
-            shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-            shareIntent.setType("text/plain");
-            shareIntent.putExtra(Intent.EXTRA_TEXT, "Testando...");
-            doShare(shareIntent);
-            return true;
-        }
+
         return super.onOptionsItemSelected(item);
     }
 
-    // Somewhere in the application.
-    public void doShare(Intent shareIntent) {
-        // When you want to share set the share intent.
-        mShareActionProvider.setShareIntent(shareIntent);
-    }
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
+    public static class DetailFragment extends Fragment {
 
-        public PlaceholderFragment() {
+        private static final String FORECAST_SHARE_HASHTAG = " #SunshineApp";
+        String mForecastMessage;
+        ShareActionProvider mShareActionProvider;
+
+        public DetailFragment() {
+            setHasOptionsMenu(true);
         }
 
         @Override
@@ -83,14 +70,40 @@ public class DetailActivity extends ActionBarActivity {
             Intent intent = getActivity().getIntent();
 
             if(intent != null && intent.hasExtra(Intent.EXTRA_TEXT)){
-                String forecastMessage = intent.getStringExtra(Intent.EXTRA_TEXT);
+                mForecastMessage = intent.getStringExtra(Intent.EXTRA_TEXT);
 
                 TextView weatherTextView = (TextView) rootView.findViewById(R.id.weather_extra_textview);
 
-                weatherTextView.setText(forecastMessage);
+                weatherTextView.setText(mForecastMessage);
             }
 
             return rootView;
+        }
+
+        @Override
+        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+            inflater.inflate(R.menu.detailfragment, menu);
+
+            // Get the menu item.
+            MenuItem menuItem = menu.findItem(R.id.action_share);
+            // Get the provider and hold onto it to set/change the share intent.
+            mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+
+            if (mShareActionProvider != null ) {
+                mShareActionProvider.setShareIntent(createShareForecastIntent());
+            }
+        }
+
+        // Somewhere in the application.
+        public Intent createShareForecastIntent() {
+
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, mForecastMessage + FORECAST_SHARE_HASHTAG);
+            
+            // When you want to share set the share intent.
+            return shareIntent;
         }
     }
 }
