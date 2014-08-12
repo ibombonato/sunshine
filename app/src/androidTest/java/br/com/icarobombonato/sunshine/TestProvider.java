@@ -23,10 +23,6 @@ public class TestProvider extends AndroidTestCase {
 
     public void testDeleteDb() throws Throwable {
         mContext.deleteDatabase(WeatherDbHelper.DATABASE_NAME);
-        SQLiteDatabase db = new WeatherDbHelper(
-                this.mContext).getWritableDatabase();
-        assertEquals(true, db.isOpen());
-        db.close();
     }
 
     public void testInsertReadDb() {
