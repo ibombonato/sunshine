@@ -20,6 +20,8 @@ public class WeatherProvider extends ContentProvider {
     private static final int LOCATION = 300;
     private static final int LOCATION_ID = 301;
 
+    private WeatherDbHelper mOpenHelper;
+
     private static UriMatcher buildUriMatcher() {
         // I know what you're thinking.  Why create a UriMatcher when you can use regular
         // expressions instead?  Because you're not crazy, that's why.
@@ -43,7 +45,8 @@ public class WeatherProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        return false;
+        mOpenHelper = new WeatherDbHelper(getContext());
+        return true;
     }
 
     @Override
@@ -53,7 +56,23 @@ public class WeatherProvider extends ContentProvider {
 
     @Override
     public String getType(Uri uri) {
-        return null;
+        // Use the Uri Matcher to determine what kind of URI this is.
+        final int match = sUriMatcher.match(uri);
+
+        switch (match) {
+            case WEATHER_WITH_LOCATION_AND_DATE:
+                return WeatherContract.WeatherEntry.CONTENT_ITEM_TYPE;
+            case WEATHER_WITH_LOCATION:
+                return WeatherContract.WeatherEntry.CONTENT_TYPE;
+            case WEATHER:
+                return WeatherContract.WeatherEntry.CONTENT_TYPE;
+            case LOCATION:
+                return WeatherContract.LocationEntry.CONTENT_TYPE;
+            case LOCATION_ID:
+                return WeatherContract.LocationEntry.CONTENT_ITEM_TYPE;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
     }
 
     @Override
